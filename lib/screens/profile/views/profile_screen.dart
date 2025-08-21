@@ -75,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ProfileCard(
             name: user?.displayName ?? "Guest",
             email: user?.email ?? "No Email",
-            imageSrc: "assets/images/bwok-cium.jpg",
+            imageSrc: "assets/images/Fathinda.jpg",
             // proLableText: "Sliver",
             // isPro: true, if the user is pro
             press: () {

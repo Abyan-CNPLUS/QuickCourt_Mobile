@@ -52,15 +52,6 @@ class _VenueRecomendedState extends State<VenueRecomended> {
 
   Future<List<Venue>> _fetchVenues() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('laravel_token');
-      print('Token yang akan dikirim: $token');
-
-      if (token == null) {
-        throw Exception('Token tidak ditemukan. Silakan login ulang.');
-      }
-
-
       final response = await http.get(
         Uri.parse('$_baseUrl/home'),
         headers: {
@@ -85,8 +76,6 @@ class _VenueRecomendedState extends State<VenueRecomended> {
         List<Venue> venues = data.map((json) => Venue.fromJson(json)).toList();
 
         return venues.take(3).toList();
-      } else if (response.statusCode == 401) {
-        throw Exception('Session expired. Silakan login ulang.');
       } else {
         throw Exception('Gagal memuat data (${response.statusCode})');
       }

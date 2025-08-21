@@ -7,12 +7,14 @@ class ChatScreen extends StatefulWidget {
   final String chatId;
   final String currentUserId;
   final String peerId;
+  final String peerName;
 
   const ChatScreen({
     super.key,
     required this.chatId,
     required this.currentUserId,
     required this.peerId,
+    required this.peerName,
   });
 
   @override
@@ -32,6 +34,10 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _initChat() async {
     chatId = await ChatHelper.createOrGetChat(widget.currentUserId, widget.peerId);
     setState(() {});
+
+    if (chatId != null) {
+      await ChatHelper.markMessagesAsRead(chatId!, widget.currentUserId);
+    }
   }
 
   void _sendMessage() {
@@ -40,6 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
     ChatHelper.sendMessage(
       widget.chatId,
       widget.currentUserId,
+      widget.peerId,
       _messageController.text.trim(),
     );
     _messageController.clear();
@@ -52,7 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text("Chat dengan ${widget.peerId}")),
+      appBar: AppBar(title: Text("Chat dengan ${widget.peerName}")),
       body: Column(
         children: [
           Expanded(

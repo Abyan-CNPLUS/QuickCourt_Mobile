@@ -1,8 +1,10 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:quick_court_booking/helper/chat_badge_controller.dart';
 import 'package:quick_court_booking/screens/booking/views/booking_history_screen.dart';
 import 'package:quick_court_booking/screens/chat/chat_list_screen.dart';
 
@@ -30,6 +32,29 @@ class _EntryPointState extends State<EntryPoint> {
   ];
 
   int _currentIndex = 0;
+
+
+  @override
+  void initState() {
+    super.initState();
+    listenNewChats();
+  }
+
+
+  void listenNewChats() {
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+    FirebaseFirestore.instance
+        .collectionGroup('messages')
+        .where('recipientId', isEqualTo: currentUserId)
+        .where('read', isEqualTo: false)
+        .snapshots()
+        .listen((snapshot) {
+          final unreadMessagesCount = snapshot.docs.length;
+          chatBadgeController.unreadCount.value = unreadMessagesCount;
+        });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +85,9 @@ class _EntryPointState extends State<EntryPoint> {
                 IconButton(
                   onPressed: () {
                     final uid = FirebaseAuth.instance.currentUser!.uid;
+
+                    chatBadgeController.reset();
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -67,13 +95,48 @@ class _EntryPointState extends State<EntryPoint> {
                       ),
                     );
                   },
-                  icon: SvgPicture.asset(
-                    "assets/icons/Notification.svg",
-                    height: 24,
-                    colorFilter: ColorFilter.mode(
-                      Theme.of(context).textTheme.bodyLarge!.color!,
-                      BlendMode.srcIn,
-                    ),
+                  icon: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/Notification.svg",
+                        height: 24,
+                        colorFilter: ColorFilter.mode(
+                          Theme.of(context).textTheme.bodyLarge!.color!,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      Positioned(
+                        right: -2,
+                        top: -2,
+                        child: ValueListenableBuilder<int>(
+                          valueListenable: chatBadgeController.unreadCount,
+                          builder: (context, count, child) {
+                            if (count == 0) return const SizedBox.shrink();
+                            return Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Text(
+                                count > 99 ? '99+' : count.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

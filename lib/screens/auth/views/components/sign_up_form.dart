@@ -6,12 +6,14 @@ class SignUpForm extends StatelessWidget {
   const SignUpForm({
     super.key,
     required this.formKey,
+    required this.nameController,
     required this.emailController,
     required this.passwordController,
     required this.phoneController,
   });
 
   final GlobalKey<FormState> formKey;
+  final TextEditingController nameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController phoneController;
@@ -22,6 +24,23 @@ class SignUpForm extends StatelessWidget {
       key: formKey,
       child: Column(
         children: [
+          // Name field
+          TextFormField(
+            controller: nameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Nama tidak boleh kosong';
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              hintText: "Nama",
+              prefixIcon: Icon(Icons.person, color: Colors.grey.shade400),
+            ),
+          ),
+          const SizedBox(height: defaultPadding),
+
+          // Email field
           TextFormField(
             controller: emailController,
             validator: (value) {
@@ -51,6 +70,8 @@ class SignUpForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: defaultPadding),
+
+          // Password field
           TextFormField(
             controller: passwordController,
             validator: (value) {
@@ -77,6 +98,8 @@ class SignUpForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: defaultPadding),
+
+          // Phone field
           TextFormField(
             controller: phoneController,
             validator: (value) {

@@ -43,11 +43,17 @@ class ChatHelper {
   }
 
   static Future<void> sendMessage(
-      String chatId, String senderId, String message) async {
+    String chatId,
+    String senderId,
+    String recipientId,
+    String message,
+  ) async {
     await _db.collection('chats').doc(chatId).collection('messages').add({
       'senderId': senderId,
+      'recipientId': recipientId,
       'message': message,
       'timestamp': FieldValue.serverTimestamp(),
+      'read': false,
     });
 
     await _db.collection('chats').doc(chatId).update({
@@ -79,5 +85,19 @@ class ChatHelper {
       'edited': true,
       'timestamp': FieldValue.serverTimestamp(),
     });
+  }
+
+  static Future<void> markMessagesAsRead(String chatId, String currentUserId) async {
+    final unreadMessages = await _db
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .where('recipientId', isEqualTo: currentUserId)
+        .where('read', isEqualTo: false)
+        .get();
+
+    for (var doc in unreadMessages.docs) {
+      await doc.reference.update({'read': true});
+    }
   }
 }

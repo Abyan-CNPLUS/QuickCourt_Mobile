@@ -27,7 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
 
   Future<void> login() async {    
-    LoadingHelper.showLoading(context);
+    setState(() => isLoading = true); 
+
+    LoadingHelper.showLoading(context); 
+
     try {
       final userCredential =
         await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -63,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
         SnackBar(content: Text("Login Gagal: $e")),
       );
     } finally {
-      setState(() => isLoading = false);
+      setState(() => isLoading = false); 
     }
   }
 
@@ -199,7 +202,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text(
                       "Log in with your data that you entered during registration."),
                   const SizedBox(height: defaultPadding),
-                  LogInForm(formKey: _formKey),
+                  LogInForm(
+                    formKey: _formKey,
+                    emailController: emailController,
+                    passwordController: passwordController,
+                  ),
                   SizedBox(
                       height: size.height > 700
                           ? size.height * 0.1

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:quick_court_booking/entry_point.dart';
 import 'package:quick_court_booking/models/venue_detail_model.dart';
 import 'dart:convert';
 
@@ -351,7 +352,13 @@ class _KonfirmasiBookingScreenState extends State<KonfirmasiBookingScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Booking berhasil!')),
         );
-        Navigator.popUntil(context, (route) => route.isFirst);
+
+        
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const EntryPoint()), // contoh EntryPoint
+        );
+
       } else {
         throw Exception(responseData['message'] ?? 'Gagal booking');
       }

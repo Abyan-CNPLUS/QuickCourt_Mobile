@@ -9,7 +9,7 @@ class LoadingHelper {
       builder: (context) {
         return Center(
           child: LoadingAnimationWidget.halfTriangleDot(
-            color: Colors.grey,
+            color: Colors.blue,
             size: 60,
           ),
         );

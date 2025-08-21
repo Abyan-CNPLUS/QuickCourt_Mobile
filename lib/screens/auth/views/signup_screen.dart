@@ -19,6 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
+  final nameController = TextEditingController();
   bool isLoading = false;
 
   Future<void> register() async {
@@ -30,6 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
       final phone = phoneController.text.trim();
+      final name = nameController.text.trim();
 
       
       UserCredential userCredential = await FirebaseAuth.instance
@@ -38,11 +40,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final user = userCredential.user;
 
       if (user != null) {
-        await user.updateDisplayName(email.split('@')[0]);
+        
+        await user.updateDisplayName(name);
+
+        
         await user.sendEmailVerification();
 
-       
+        
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'name': name,
           'email': email,
           'phone': phone,
           'role': 'user',
@@ -50,12 +56,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
 
         
-        await sendUserToLaravel(user, phone);
+        await sendUserToLaravel(user, phone, name);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content:
-                Text("Successfully registered! Please verify your email."),
+            content: Text("Successfully registered! Please verify your email."),
             duration: Duration(seconds: 5),
           ),
         );
@@ -73,7 +78,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  Future<void> sendUserToLaravel(User user, String phone) async {
+
+  Future<void> sendUserToLaravel(User user, String phone, String name) async {
     try {
       final idToken = await user.getIdToken();
       final response = await http.post(
@@ -82,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         body: jsonEncode({
           'idToken': idToken,
           'phone': phone,
-          'display_name': user.displayName ?? '',
+          'display_name': name,  
           'role': 'user',
         }),
       );
@@ -126,6 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       SignUpForm(
                         formKey: _formKey,
+                        nameController: nameController,
                         emailController: emailController,
                         passwordController: passwordController,
                         phoneController: phoneController,

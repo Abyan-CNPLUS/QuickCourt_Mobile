@@ -59,6 +59,7 @@ class ChatListScreen extends StatelessWidget {
                             chatId: chatId,
                             currentUserId: currentUserId,
                             peerId: peerId,
+                            peerName: peerName,
                           ),
                         ),
                       );
