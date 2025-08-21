@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1007839938473",
+    "project_id": "quickcourt-apps",
+    "storage_bucket": "quickcourt-apps.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007839938473:android:bbde06570ee67cdb4a66b8",
+        "android_client_info": {
+          "package_name": "com.quickcourt.booking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007839938473-4jor8i0p2cj258cq044qg7ait23nsth2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quickcourt.booking",
+            "certificate_hash": "f0dceed98b6404188702b9bb2a5b91638e78d75e"
+          }
+        },
+        {
+          "client_id": "1007839938473-697sqvon98go1h6d92fr2cr0bb2o84d4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs4D3NeA4g3wMqo_Vf0msOAKGlnZEK49c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007839938473-697sqvon98go1h6d92fr2cr0bb2o84d4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
