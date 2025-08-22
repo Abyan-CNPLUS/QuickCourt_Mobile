@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'providers/venue_provider.dart';
 // import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart'; 
 import 'route/route_constants.dart';
@@ -29,13 +32,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Booking App',
-      theme: AppTheme.lightTheme(context),
-      themeMode: ThemeMode.light,
-      onGenerateRoute: router.generateRoute,
-      initialRoute: splashScreenRoute,
+    return MultiProvider(   
+      providers: [
+        ChangeNotifierProvider(create: (_) => VenueProvider()), 
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Booking App',
+        theme: AppTheme.lightTheme(context),
+        themeMode: ThemeMode.light,
+        onGenerateRoute: router.generateRoute,
+        initialRoute: splashScreenRoute,
+      ),
     );
   }
 }

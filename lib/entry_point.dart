@@ -12,6 +12,7 @@ import 'package:quick_court_booking/screens/fnb/views/fnb_location_screen.dart';
 import 'package:quick_court_booking/screens/home/views/home_screen.dart';
 import 'package:quick_court_booking/screens/list_venue/views/venue_screen.dart';
 import 'package:quick_court_booking/screens/profile/views/profile_screen.dart';
+import 'package:quick_court_booking/screens/search/views/search_screen.dart';
 
 
 
@@ -73,7 +74,12 @@ class _EntryPointState extends State<EntryPoint> {
               ),
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const SearchScreen()),
+                    );
+                  },
                   icon: SvgPicture.asset(
                     "assets/icons/Search.svg",
                     height: 24,
@@ -82,6 +88,7 @@ class _EntryPointState extends State<EntryPoint> {
                         BlendMode.srcIn),
                   ),
                 ),
+
                 IconButton(
                   onPressed: () {
                     final uid = FirebaseAuth.instance.currentUser!.uid;
