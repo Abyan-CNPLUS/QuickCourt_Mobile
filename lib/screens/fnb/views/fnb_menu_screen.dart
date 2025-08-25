@@ -44,11 +44,11 @@ class _FnbMenuScreenState extends State<FnbMenuScreen> {
     try {
       final catRes = await http.get(
         Uri.parse(
-            'http://192.168.1.16:8000/api/fnb/categories/venue/${widget.venueId}'),
+            'http://192.168.1.22:8000/api/fnb/categories/venue/${widget.venueId}'),
       );
       final menuRes = await http.get(
         Uri.parse(
-            'http://192.168.1.16:8000/api/fnb/menu/venue/${widget.venueId}'),
+            'http://192.168.1.22:8000/api/fnb/menu/venue/${widget.venueId}'),
       );
 
       if (!mounted) return;

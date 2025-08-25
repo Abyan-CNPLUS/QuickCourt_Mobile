@@ -34,7 +34,7 @@ class _DetailVenueScreenState extends State<DetailVenueScreen> {
   Future<void> fetchVenue() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.16:8000/api/venues/${widget.venueId}'),
+        Uri.parse('http://192.168.1.22:8000/api/venues/${widget.venueId}'),
       );
 
       if (response.statusCode == 200) {

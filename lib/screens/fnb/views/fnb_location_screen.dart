@@ -25,7 +25,7 @@ class _FnbLocationScreenState extends State<FnbLocationScreen> {
   }
 
   Future<void> fetchCities() async {
-    final response = await http.get(Uri.parse('http://192.168.1.16:8000/api/fnb/cities'));
+    final response = await http.get(Uri.parse('http://192.168.1.22:8000/api/fnb/cities'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -50,7 +50,7 @@ class _FnbLocationScreenState extends State<FnbLocationScreen> {
     print("Fetching venues for city: ${selectedCity!.name} (ID: ${selectedCity!.id})");
 
     final response = await http.get(
-      Uri.parse('http://192.168.1.16:8000/api/fnb/venues/${selectedCity!.id}'),
+      Uri.parse('http://192.168.1.22:8000/api/fnb/venues/${selectedCity!.id}'),
     );
 
     print("Response status: ${response.statusCode}");
@@ -97,7 +97,10 @@ class _FnbLocationScreenState extends State<FnbLocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Temukan FNB Venue')),
+      appBar: AppBar(
+        title: const Text('Temukan FNB Venue'),
+        automaticallyImplyLeading: false,
+        ),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [

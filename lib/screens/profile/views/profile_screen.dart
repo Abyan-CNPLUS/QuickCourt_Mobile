@@ -67,9 +67,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile"),
-      ),
+      // appBar: AppBar(
+      //   title: const Text("Profile"),
+      //   automaticallyImplyLeading: false,
+      // ),
       body: ListView(
         children: [
           ProfileCard(
@@ -131,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               try {
               
                 final userResponse = await http.get(
-                  Uri.parse('http://192.168.1.16:8000/api/user'),
+                  Uri.parse('http://192.168.1.22:8000/api/user'),
                   headers: {
                     'Authorization': 'Bearer $token',
                     'Accept': 'application/json',
@@ -158,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                
                 final venueResponse = await http.get(
-                  Uri.parse('http://192.168.1.16:8000/api/owner/check-venue'),
+                  Uri.parse('http://192.168.1.22:8000/api/owner/check-venue'),
                   headers: {
                     'Authorization': 'Bearer $token',
                     'Accept': 'application/json',
@@ -178,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if (venueData['exists'] != true || venuesList == null || !(venuesList is List) || venuesList.isEmpty) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AddVenueScreen()),
+                    MaterialPageRoute(builder: (context) => const RegisterVenueScreen()),
                   );
                   return;
                 }

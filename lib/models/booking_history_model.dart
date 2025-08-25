@@ -26,7 +26,7 @@ class BookingHistory {
     
     String imagePath = '';
     if (venue['primary_image'] != null && venue['primary_image']['image_url'] != null) {
-      imagePath = "http://192.168.1.16:8000/storage/${venue['primary_image']['image_url']}";
+      imagePath = "http://192.168.1.22:8000/storage/${venue['primary_image']['image_url']}";
     }
 
     return BookingHistory(

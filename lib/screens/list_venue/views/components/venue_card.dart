@@ -94,7 +94,7 @@ class VenueCard extends StatelessWidget {
                                       venue.category,
                                       style: const TextStyle(
                                         fontSize: 12,
-                                        // color: Colors.black87,
+                                        
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,

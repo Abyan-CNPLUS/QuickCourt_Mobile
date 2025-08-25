@@ -60,7 +60,7 @@ class _EntryPointState extends State<EntryPoint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (_currentIndex == 1 || _currentIndex == 3 || _currentIndex == 4 || _currentIndex == 2)
+      appBar: (_currentIndex == 3 || _currentIndex == 2)
           ? null
           : AppBar(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
