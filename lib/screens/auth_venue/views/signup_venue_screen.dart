@@ -48,12 +48,13 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
 
   Future<void> _fetchFacilities() async {
     try {
-      final response = await http.get(Uri.parse("http://192.168.1.22:8000/api/facilities"));
+      final response =
+          await http.get(Uri.parse("http://192.168.1.12:8000/api/facilities"));
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body);
 
         setState(() {
-          facilities = decoded['facilities']; 
+          facilities = decoded['facilities'];
         });
 
         print("Facilities loaded: $facilities");
@@ -67,7 +68,7 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
 
   Future<void> _fetchCategories() async {
     final response = await http.get(
-      Uri.parse("http://192.168.1.22:8000/api/categories"),
+      Uri.parse("http://192.168.1.12:8000/api/categories"),
     );
     if (response.statusCode == 200) {
       setState(() {
@@ -78,7 +79,7 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
 
   Future<void> _fetchCities() async {
     final response = await http.get(
-      Uri.parse("http://192.168.1.22:8000/api/city"),
+      Uri.parse("http://192.168.1.12:8000/api/city"),
     );
     if (response.statusCode == 200) {
       setState(() {
@@ -113,7 +114,7 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
 
     var request = http.MultipartRequest(
       "POST",
-      Uri.parse("http://192.168.1.22:8000/api/owner/venues"),
+      Uri.parse("http://192.168.1.12:8000/api/owner/venues"),
     );
 
     request.headers["Authorization"] = "Bearer $token";
@@ -137,7 +138,8 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
 
     // multiple images
     for (var img in _pickedImages) {
-      request.files.add(await http.MultipartFile.fromPath("images[]", img.path));
+      request.files
+          .add(await http.MultipartFile.fromPath("images[]", img.path));
     }
 
     var response = await request.send();
@@ -149,18 +151,16 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
         const SnackBar(content: Text("Venue berhasil didaftarkan")),
       );
 
-      
       final resBody = await response.stream.bytesToString();
       final decoded = jsonDecode(resBody);
 
-      
       final newVenue = decoded['data'];
 
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => OwnerDashboardScreen(
-            venues: [Venue.fromJson(newVenue)], 
+            venues: [Venue.fromJson(newVenue)],
           ),
         ),
       );
@@ -182,7 +182,6 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
           key: _formKey,
           child: Column(
             children: [
-              
               _pickedImages.isNotEmpty
                   ? SizedBox(
                       height: 120,
@@ -243,19 +242,19 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
               ),
               SizedBox(height: 16),
 
-              
               DropdownButtonFormField<String>(
                 value: selectedStatus,
                 decoration: const InputDecoration(labelText: "Status"),
                 items: const [
-                  DropdownMenuItem(value: "available", child: Text("Available")),
-                  DropdownMenuItem(value: "unavailable", child: Text("Unavailable")),
+                  DropdownMenuItem(
+                      value: "available", child: Text("Available")),
+                  DropdownMenuItem(
+                      value: "unavailable", child: Text("Unavailable")),
                 ],
                 onChanged: (val) => setState(() => selectedStatus = val!),
               ),
               SizedBox(height: 16),
 
-              
               DropdownButtonFormField<int>(
                 value: selectedCategory,
                 decoration: const InputDecoration(labelText: "Kategori"),
@@ -271,7 +270,6 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
               ),
               SizedBox(height: 16),
 
-              
               DropdownButtonFormField<int>(
                 value: selectedCity,
                 decoration: const InputDecoration(labelText: "Kota"),
@@ -287,7 +285,6 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
               ),
               SizedBox(height: 16),
 
-              
               if (facilities.isNotEmpty)
                 MultiSelectDialogField(
                   items: facilities.map<MultiSelectItem<int>>((f) {
@@ -304,9 +301,8 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
                   },
                 ),
 
-                SizedBox(height: 16),
+              SizedBox(height: 16),
 
-              
               TextFormField(
                 controller: _descController,
                 decoration: const InputDecoration(labelText: "Deskripsi"),
@@ -315,7 +311,6 @@ class _RegisterVenueScreenState extends State<RegisterVenueScreen> {
               ),
               SizedBox(height: 16),
 
-              
               TextFormField(
                 controller: _rulesController,
                 decoration: const InputDecoration(labelText: "Peraturan"),

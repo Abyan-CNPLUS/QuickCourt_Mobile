@@ -25,7 +25,8 @@ class ChatHelper {
     return chatRef.id;
   }
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getUserChats(String userId) {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getUserChats(
+      String userId) {
     return _db
         .collection('chats')
         .where('participants', arrayContains: userId)
@@ -33,7 +34,8 @@ class ChatHelper {
         .snapshots();
   }
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(String chatId) {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(
+      String chatId) {
     return _db
         .collection('chats')
         .doc(chatId)
@@ -62,7 +64,6 @@ class ChatHelper {
     });
   }
 
-  
   static Future<void> deleteMessage(String chatId, String messageId) async {
     await _db
         .collection('chats')
@@ -72,7 +73,6 @@ class ChatHelper {
         .delete();
   }
 
-  
   static Future<void> editMessage(
       String chatId, String messageId, String newMessage) async {
     await _db
@@ -87,7 +87,8 @@ class ChatHelper {
     });
   }
 
-  static Future<void> markMessagesAsRead(String chatId, String currentUserId) async {
+  static Future<void> markMessagesAsRead(
+      String chatId, String currentUserId) async {
     final unreadMessages = await _db
         .collection('chats')
         .doc(chatId)
@@ -99,5 +100,29 @@ class ChatHelper {
     for (var doc in unreadMessages.docs) {
       await doc.reference.update({'read': true});
     }
+  }
+
+  Future<void> notifyOwnerAboutBooking({
+    required String userId,
+    required String ownerId,
+    required String venueName,
+    required String date,
+    required String timeRange,
+    required int totalPrice,
+    required int bookingId,
+  }) async {
+    final chatId = await ChatHelper.createOrGetChat(userId, ownerId);
+
+    final message = '''
+📢 Booking Baru!
+
+Lapangan: $venueName
+Tanggal: $date
+Jam: $timeRange
+Total Harga: Rp ${totalPrice.toString()}
+Booking ID: $bookingId
+''';
+
+    await ChatHelper.sendMessage(chatId, userId, ownerId, message);
   }
 }

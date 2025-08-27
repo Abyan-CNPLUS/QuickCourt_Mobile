@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:quick_court_booking/helper/chat_helper.dart';
 
 class SelectDateScreen extends StatefulWidget {
   final VenueDetail venue;
@@ -35,13 +36,10 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
       return formatTanggal.format(sekarang.add(Duration(days: index)));
     });
 
-
     final hargaTotal = slotTerpilih.fold(0, (total, slot) {
       final hargaPerSlot = int.tryParse(widget.venue.price) ?? 0;
       return total + hargaPerSlot;
     });
-
-    
 
     return Scaffold(
       appBar: AppBar(
@@ -71,10 +69,11 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                       final selectedDate = listHari[index];
                       final fullDate = DateFormat('EEE d MMM yyyy', 'id_ID')
                           .parseLoose('$selectedDate ${DateTime.now().year}');
-                      final formatted = DateFormat('yyyy-MM-dd').format(fullDate);
+                      final formatted =
+                          DateFormat('yyyy-MM-dd').format(fullDate);
 
                       final response = await http.get(Uri.parse(
-                          'http://192.168.1.22:8000/api/venues/${widget.venue.id}/available-times?date=$formatted'));
+                          'http://192.168.1.12:8000/api/venues/${widget.venue.id}/available-times?date=$formatted'));
 
                       if (response.statusCode == 200) {
                         final data = jsonDecode(response.body);
@@ -84,9 +83,7 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                       }
 
                       print('Response body: ${response.body}');
-
                     },
-
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
@@ -134,7 +131,6 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                 const Icon(Icons.chevron_right, color: Colors.blue),
               ],
             ),
-
             const Divider(height: 32),
             Column(
               children: semuaSlot.map<Widget>((slot) {
@@ -165,7 +161,8 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                               : Colors.white,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: isTerpilih ? Colors.blue[700]! : Colors.grey[300]!,
+                        color:
+                            isTerpilih ? Colors.blue[700]! : Colors.grey[300]!,
                       ),
                     ),
                     child: Row(
@@ -194,7 +191,8 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                                       style: const TextStyle(fontSize: 16)),
                                   Text(display,
                                       style: TextStyle(
-                                          fontSize: 14, color: Colors.grey[600])),
+                                          fontSize: 14,
+                                          color: Colors.grey[600])),
                                 ],
                               ),
                         Text(
@@ -214,7 +212,6 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                 );
               }).toList(),
             ),
-
             const Divider(height: 32),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -282,7 +279,6 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
       ),
     );
   }
-
 }
 
 class KonfirmasiBookingScreen extends StatefulWidget {
@@ -332,7 +328,7 @@ class _KonfirmasiBookingScreenState extends State<KonfirmasiBookingScreen> {
       final bookingDate = DateFormat('yyyy-MM-dd').format(parsedDate);
 
       final response = await http.post(
-        Uri.parse('http://192.168.1.22:8000/api/bookings'),
+        Uri.parse('http://192.168.1.12:8000/api/bookings'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -353,12 +349,14 @@ class _KonfirmasiBookingScreenState extends State<KonfirmasiBookingScreen> {
           const SnackBar(content: Text('Booking berhasil!')),
         );
 
-        
+        // final prefs = await SharedPreferences.getInstance();
+        // final currentUserId = prefs.getString('user_id') ?? '';
+        // final ownerId = widget.venue.ownerId;
+
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const EntryPoint()), // contoh EntryPoint
+          MaterialPageRoute(builder: (_) => const EntryPoint()),
         );
-
       } else {
         throw Exception(responseData['message'] ?? 'Gagal booking');
       }

@@ -16,7 +16,7 @@ class VenueRecomended extends StatefulWidget {
 
 class _VenueRecomendedState extends State<VenueRecomended> {
   late Future<List<Venue>> _venuesFuture;
-  final String _baseUrl = 'http://192.168.1.22:8000/api';
+  final String _baseUrl = 'http://192.168.1.12:8000/api';
 
   @override
   void initState() {
@@ -135,7 +135,8 @@ class _VenueRecomendedState extends State<VenueRecomended> {
                 ),
                 child: SizedBox(
                   width: 120,
-                  child: (venue.thumbnail != null && venue.thumbnail!.isNotEmpty)
+                  child:
+                      (venue.thumbnail != null && venue.thumbnail!.isNotEmpty)
                           ? Image.network(
                               venue.imageUrl,
                               fit: BoxFit.cover,

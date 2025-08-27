@@ -33,20 +33,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final phone = phoneController.text.trim();
       final name = nameController.text.trim();
 
-      
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
       final user = userCredential.user;
 
       if (user != null) {
-        
         await user.updateDisplayName(name);
 
-        
         await user.sendEmailVerification();
 
-        
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'name': name,
           'email': email,
@@ -55,7 +51,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'createdAt': Timestamp.now(),
         });
 
-        
         await sendUserToLaravel(user, phone, name);
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -78,17 +73,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-
   Future<void> sendUserToLaravel(User user, String phone, String name) async {
     try {
       final idToken = await user.getIdToken();
       final response = await http.post(
-        Uri.parse("http://192.168.1.22:8000/api/firebase-register"),
+        Uri.parse("http://192.168.1.12:8000/api/firebase-register"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'idToken': idToken,
           'phone': phone,
-          'display_name': name,  
+          'display_name': name,
           'role': 'user',
         }),
       );
@@ -129,7 +123,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(height: defaultPadding / 2),
                       const Text("Create a new account to continue."),
                       const SizedBox(height: defaultPadding),
-
                       SignUpForm(
                         formKey: _formKey,
                         nameController: nameController,
@@ -137,9 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         passwordController: passwordController,
                         phoneController: phoneController,
                       ),
-
                       const SizedBox(height: defaultPadding * 2),
-
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
@@ -151,9 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               : const Text("Sign Up"),
                         ),
                       ),
-
                       const SizedBox(height: defaultPadding),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

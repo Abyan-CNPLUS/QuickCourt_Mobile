@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quick_court_booking/models/venue_model.dart';
 import 'package:quick_court_booking/screens/auth_venue/views/signup_venue_screen.dart';
-
+import 'package:quick_court_booking/screens/owner/owner_main_screen.dart';
 
 class OwnerDashboardScreen extends StatelessWidget {
   final List<Venue> venues;
@@ -18,9 +18,27 @@ class OwnerDashboardScreen extends StatelessWidget {
               itemCount: venues.length,
               itemBuilder: (context, index) {
                 final venue = venues[index];
-                return ListTile(
-                  title: Text(venue.name),
-                  subtitle: Text(venue.city),
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                  child: ListTile(
+                    title: Text(
+                      venue.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(venue.city),
+                    trailing: const Icon(Icons.bar_chart, color: Colors.blue),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => OwnerVenueDashboard(
+                            venueId: venue.id,
+                            venueName: venue.name,  
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),

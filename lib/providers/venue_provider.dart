@@ -16,15 +16,13 @@ class VenueProvider with ChangeNotifier {
 
     try {
       final response = await http.get(
-        Uri.parse("http://192.168.1.22:8000/api/venues?search=$keyword"),
+        Uri.parse("http://192.168.1.12:8000/api/venues?search=$keyword"),
       );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        
-        _venues = (data['data'] as List)
-            .map((e) => Venue.fromJson(e))
-            .toList();
+
+        _venues = (data['data'] as List).map((e) => Venue.fromJson(e)).toList();
       } else {
         _venues = [];
       }

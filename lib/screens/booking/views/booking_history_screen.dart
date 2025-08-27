@@ -27,7 +27,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       final token = prefs.getString('laravel_token');
 
       final res = await http.get(
-        Uri.parse("http://192.168.1.22:8000/api/booking-history"),
+        Uri.parse("http://192.168.1.12:8000/api/booking-history"),
         headers: {"Authorization": "Bearer $token"},
       );
 
@@ -74,7 +74,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       ),
       child: Text(
         status.toUpperCase(),
-        style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
+        style:
+            TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
       ),
     );
   }
@@ -111,17 +112,22 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
-                                      const Icon(Icons.shopping_bag_outlined, size: 20, color: Colors.black87),
+                                      const Icon(Icons.shopping_bag_outlined,
+                                          size: 20, color: Colors.black87),
                                       const SizedBox(width: 6),
                                       Text(
                                         b.date,
-                                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -147,13 +153,15 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                                             width: 60,
                                             height: 60,
                                             color: Colors.grey[300],
-                                            child: const Icon(Icons.image, color: Colors.grey),
+                                            child: const Icon(Icons.image,
+                                                color: Colors.grey),
                                           ),
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           b.venueName,
@@ -167,7 +175,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                                         const SizedBox(height: 4),
                                         Text(
                                           "${b.time}",
-                                          style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                                          style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 13),
                                         ),
                                       ],
                                     ),
@@ -177,13 +187,17 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                             ),
                             const Divider(height: 1),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 10),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Text(
                                     "Total Harga",
-                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                   Text(
                                     'Rp. ${b.totalPrice.toStringAsFixed(0)}',

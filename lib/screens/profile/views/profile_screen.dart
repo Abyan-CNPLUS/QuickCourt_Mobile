@@ -25,8 +25,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  
-   User? user;
+  User? user;
 
   @override
   void initState() {
@@ -38,7 +37,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     user = FirebaseAuth.instance.currentUser;
     setState(() {});
   }
-
 
   Future<void> logout() async {
     print("Mulai logout");
@@ -55,14 +53,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return;
     }
 
-    
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Navigator.pushNamed(context, ordersScreenRoute);
             },
           ),
-          
-          
-          
+
           ProfileMenuListTile(
             text: "Booking Manage",
             svgSrc: "assets/icons/Accessories.svg",
@@ -130,9 +123,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
 
               try {
-              
                 final userResponse = await http.get(
-                  Uri.parse('http://192.168.1.22:8000/api/user'),
+                  Uri.parse('http://192.168.1.12:8000/api/user'),
                   headers: {
                     'Authorization': 'Bearer $token',
                     'Accept': 'application/json',
@@ -152,14 +144,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if (role == 'admin') {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AdminBookingScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const AdminBookingScreen()),
                   );
                   return;
                 }
 
-               
                 final venueResponse = await http.get(
-                  Uri.parse('http://192.168.1.22:8000/api/owner/check-venue'),
+                  Uri.parse('http://192.168.1.12:8000/api/owner/check-venue'),
                   headers: {
                     'Authorization': 'Bearer $token',
                     'Accept': 'application/json',
@@ -176,17 +168,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 final venueData = json.decode(venueResponse.body);
                 final venuesList = venueData['venues'];
 
-                if (venueData['exists'] != true || venuesList == null || !(venuesList is List) || venuesList.isEmpty) {
+                if (venueData['exists'] != true ||
+                    venuesList == null ||
+                    !(venuesList is List) ||
+                    venuesList.isEmpty) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const RegisterVenueScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const RegisterVenueScreen()),
                   );
                   return;
                 }
 
-                final List<Venue> venues = venuesList
-                  .map((json) => Venue.fromJson(json))
-                  .toList();
+                final List<Venue> venues =
+                    venuesList.map((json) => Venue.fromJson(json)).toList();
 
                 Navigator.push(
                   context,
@@ -218,21 +213,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Navigator.pushNamed(context, enableNotificationScreenRoute);
             },
           ),
-          
+
           const SizedBox(height: defaultPadding),
           Padding(
             padding: const EdgeInsets.symmetric(
-                horizontal: defaultPadding, vertical: defaultPadding / 2
-                ),
+                horizontal: defaultPadding, vertical: defaultPadding / 2),
             child: Text(
               "Settings",
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
-          
+
           const SizedBox(height: defaultPadding),
 
-          
           ListTile(
             onTap: () {
               showDialog(
@@ -242,12 +235,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   content: const Text("Are you sure you want to logout?"),
                   actions: [
                     TextButton(
-                      onPressed: () => Navigator.of(context).pop(), 
+                      onPressed: () => Navigator.of(context).pop(),
                       child: const Text("No"),
                     ),
                     TextButton(
                       onPressed: () async {
-                        Navigator.of(context).pop(); 
+                        Navigator.of(context).pop();
                         print("Mulai logout");
 
                         await logout();
@@ -259,7 +252,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         }
 
                         print("Navigasi ke LoginScreen");
-                        
                       },
                       child: const Text("Yes"),
                     ),

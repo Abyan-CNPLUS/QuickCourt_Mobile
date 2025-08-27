@@ -39,7 +39,7 @@ class _HeaderSectionState extends State<HeaderSection> {
     }
 
     final response = await http.get(
-      Uri.parse('http://192.168.1.22:8000/api/user'),
+      Uri.parse('http://192.168.1.12:8000/api/user'),
       headers: {
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',
@@ -101,7 +101,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                           height: 40,
                         ),
                         const SizedBox(width: 10),
-                        Expanded( 
+                        Expanded(
                           child: Text.rich(
                             TextSpan(
                               children: [
@@ -161,7 +161,8 @@ class _HeaderSectionState extends State<HeaderSection> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const FnbLocationScreen(),
+                                  builder: (context) =>
+                                      const FnbLocationScreen(),
                                 ),
                               );
                             },

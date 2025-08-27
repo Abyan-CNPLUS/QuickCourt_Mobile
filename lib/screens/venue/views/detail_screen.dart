@@ -14,7 +14,7 @@ import 'package:quick_court_booking/screens/venue/views/components/venue_detail_
 
 class DetailVenueScreen extends StatefulWidget {
   final int venueId;
-  
+
   const DetailVenueScreen({super.key, required this.venueId});
 
   @override
@@ -34,7 +34,7 @@ class _DetailVenueScreenState extends State<DetailVenueScreen> {
   Future<void> fetchVenue() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.22:8000/api/venues/${widget.venueId}'),
+        Uri.parse('http://192.168.1.12:8000/api/venues/${widget.venueId}'),
       );
 
       if (response.statusCode == 200) {
@@ -54,16 +54,15 @@ class _DetailVenueScreenState extends State<DetailVenueScreen> {
     }
   }
 
-
   String _formatCurrency(dynamic price) {
     if (price == null) return 'Harga tidak tersedia';
 
     try {
       final intValue = int.tryParse(price.toString()) ?? 0;
       return 'Rp ${intValue.toString().replaceAllMapped(
-        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-        (Match m) => '${m[1]}.',
-      )}';
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match m) => '${m[1]}.',
+          )}';
     } catch (e) {
       return 'Rp -';
     }
@@ -76,22 +75,23 @@ class _DetailVenueScreenState extends State<DetailVenueScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Stack(
               children: [
-                SingleChildScrollView(  
+                SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       VenueCarousel(
-                      imageUrls: venue?['images'] != null
-                          ? List<String>.from(
-                              venue!['images'].map((img) => getFullImageUrl(img['image_url'])),
-                            )
-                          : [],
-                    ),
+                        imageUrls: venue?['images'] != null
+                            ? List<String>.from(
+                                venue!['images'].map(
+                                    (img) => getFullImageUrl(img['image_url'])),
+                              )
+                            : [],
+                      ),
 
                       // const SizedBox(height: 250),
 
                       Transform.translate(
-                        offset: const Offset(0, -30), 
+                        offset: const Offset(0, -30),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Material(
@@ -116,125 +116,124 @@ class _DetailVenueScreenState extends State<DetailVenueScreen> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(240, 240, 240, 1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      getCategoryIcon(
-                                          venue?['category']?['name'] ?? ''),
-                                      size: 16,
-                                      color: Colors.black54,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      venue?['category']?['name'] ??
-                                          'Unknown Category',
-                                      style: const TextStyle(
-                                        fontSize: 12,
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(
+                                              240, 240, 240, 1),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              getCategoryIcon(venue?['category']
+                                                      ?['name'] ??
+                                                  ''),
+                                              size: 16,
+                                              color: Colors.black54,
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              venue?['category']?['name'] ??
+                                                  'Unknown Category',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      const Icon(
+                                        Icons.brightness_1,
+                                        size: 8,
+                                        color: Color.fromRGBO(0, 0, 0, 0.4),
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        venue?['city']?['name'] ??
+                                            'Unknown City',
+                                        style: const TextStyle(
+                                          color: Color.fromRGBO(0, 0, 0, 0.6),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  const DottedLine(
+                                    direction: Axis.horizontal,
+                                    lineLength: double.infinity,
+                                    lineThickness: 1.0,
+                                    dashLength: 4.0,
+                                    dashColor: Colors.grey,
+                                  ),
+                                  const SizedBox(height: 12),
+                                  const Text("Deskripsi",
+                                      style: TextStyle(
                                         color: Colors.black87,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  const SizedBox(height: 0),
+                                  Text(
+                                    venue?['deskripsi'] ??
+                                        'Tidak ada deskripsi.',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black87,
+                                    ),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 12),
+                                  const Text("Rules",
+                                      style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                  const SizedBox(height: 0),
+                                  Text(
+                                    venue?['rules'] ?? 'Tidak ada rules.',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black87,
+                                    ),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        enableDrag: false,
+                                        isDismissible: false,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (_) => VenueDetailBottomSheet(
+                                            venue: venue!),
+                                      );
+                                    },
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      minimumSize: const Size(0, 0),
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                    ),
+                                    child: const Text(
+                                      'Selengkapnya',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.blue,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-
-                              const SizedBox(width: 6),
-                              const Icon(
-                                Icons.brightness_1,
-                                size: 8,
-                                color: Color.fromRGBO(0, 0, 0, 0.4),
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                venue?['city']?['name'] ?? 'Unknown City',
-                                style: const TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 0.6),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          const DottedLine(
-                            direction: Axis.horizontal,
-                            lineLength: double.infinity,
-                            lineThickness: 1.0,
-                            dashLength: 4.0,
-                            dashColor: Colors.grey,
-                          ),
-
-                          const SizedBox(height: 12),
-                          const Text(
-                            "Deskripsi",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          const SizedBox(height: 0),
-                          Text(
-                            venue?['deskripsi'] ?? 'Tidak ada deskripsi.',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.black87,
-                            ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-
-                          const SizedBox(height: 12),
-
-                          const Text(
-                            "Rules",
-                              style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          const SizedBox(height: 0),
-                          Text(
-                            venue?['rules'] ?? 'Tidak ada rules.',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.black87,
-                            ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-
-                          TextButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                enableDrag: false,
-                                isDismissible: false,
-                                backgroundColor: Colors.transparent,
-                                builder: (_) => VenueDetailBottomSheet(venue: venue!),
-                              );
-                            },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: const Size(0, 0),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              
-                            ),
-                            child: const Text(
-                              'Selengkapnya',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          )
+                                  )
                                 ],
                               ),
                             ),
@@ -251,7 +250,8 @@ class _DetailVenueScreenState extends State<DetailVenueScreen> {
                       //   ),
                       // ),
 
-                      if (venue?['facilities'] != null && venue!['facilities'].isNotEmpty)
+                      if (venue?['facilities'] != null &&
+                          venue!['facilities'].isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 8),
@@ -365,24 +365,25 @@ class _DetailVenueScreenState extends State<DetailVenueScreen> {
             SizedBox(
               width: 150,
               child: ElevatedButton(
-                  onPressed: () {
-                    if (venue != null) {
-                      final venueModel = VenueDetail.fromJson(venue!);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SelectDateScreen(
-                            venue: venueModel,
-                            venueId: widget.venueId,
-                          ),
+                onPressed: () {
+                  if (venue != null) {
+                    final venueModel = VenueDetail.fromJson(venue!);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectDateScreen(
+                          venue: venueModel,
+                          venueId: widget.venueId,
                         ),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Data venue belum tersedia')),
-                      );
-                    }
-                  },
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Data venue belum tersedia')),
+                    );
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                   padding: const EdgeInsets.symmetric(vertical: 10),

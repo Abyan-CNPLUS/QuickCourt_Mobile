@@ -8,7 +8,6 @@ import 'package:quick_court_booking/models/fnb_menu_model.dart';
 import 'package:quick_court_booking/screens/cart/views/cart_screen.dart';
 import 'package:quick_court_booking/services/cart_services.dart';
 
-
 class FnbMenuScreen extends StatefulWidget {
   final int venueId;
   final String venueName;
@@ -44,11 +43,11 @@ class _FnbMenuScreenState extends State<FnbMenuScreen> {
     try {
       final catRes = await http.get(
         Uri.parse(
-            'http://192.168.1.22:8000/api/fnb/categories/venue/${widget.venueId}'),
+            'http://192.168.1.12:8000/api/fnb/categories/venue/${widget.venueId}'),
       );
       final menuRes = await http.get(
         Uri.parse(
-            'http://192.168.1.22:8000/api/fnb/menu/venue/${widget.venueId}'),
+            'http://192.168.1.12:8000/api/fnb/menu/venue/${widget.venueId}'),
       );
 
       if (!mounted) return;
@@ -134,15 +133,14 @@ class _FnbMenuScreenState extends State<FnbMenuScreen> {
                       color: Colors.blue,
                       child: Row(
                         children: [
-                           Expanded(
-                            child: Text(
-                              widget.venueName,
-                              style: const TextStyle(color: Colors.white, fontSize: 16),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )
-                          ),
-                          
+                          Expanded(
+                              child: Text(
+                            widget.venueName,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                           TextButton(
                             onPressed: () => Navigator.pop(context),
                             child: const Text("Change",
@@ -228,13 +226,20 @@ class _FnbMenuScreenState extends State<FnbMenuScreen> {
                                             );
 
                                             try {
-                                              await addToCartLocalAndServer(newItem);  // sinkron ke backend + update local cart
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(content: Text("${item.name} ditambahkan ke keranjang")),
+                                              await addToCartLocalAndServer(
+                                                  newItem); // sinkron ke backend + update local cart
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        "${item.name} ditambahkan ke keranjang")),
                                               );
                                             } catch (e) {
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(content: Text("Gagal menambahkan ${item.name} ke keranjang")),
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        "Gagal menambahkan ${item.name} ke keranjang")),
                                               );
                                             }
                                           },

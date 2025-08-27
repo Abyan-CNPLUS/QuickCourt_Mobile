@@ -23,10 +23,11 @@ class BookingHistory {
     final venue = json['venue'];
     final city = venue['city'];
 
-    
     String imagePath = '';
-    if (venue['primary_image'] != null && venue['primary_image']['image_url'] != null) {
-      imagePath = "http://192.168.1.22:8000/storage/${venue['primary_image']['image_url']}";
+    if (venue['primary_image'] != null &&
+        venue['primary_image']['image_url'] != null) {
+      imagePath =
+          "http://192.168.1.12:8000/storage/${venue['primary_image']['image_url']}";
     }
 
     return BookingHistory(
@@ -35,9 +36,10 @@ class BookingHistory {
       venueCity: city['name'] ?? '',
       imageUrl: imagePath,
       status: json['status'] ?? '',
-      date: json['booking_date']?.substring(0, 10) ?? '', 
+      date: json['booking_date']?.substring(0, 10) ?? '',
       time: "${json['start_time'] ?? ''} - ${json['end_time'] ?? ''}",
-      totalPrice: double.tryParse(json['total_price']?.toString() ?? '0') ?? 0.0,
+      totalPrice:
+          double.tryParse(json['total_price']?.toString() ?? '0') ?? 0.0,
     );
   }
 }

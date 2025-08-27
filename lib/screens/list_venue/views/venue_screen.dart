@@ -36,7 +36,6 @@ class _VenueScreenState extends State<VenueScreen> {
     if (isLoading || (!hasMore && isLoadMore)) return;
 
     if (!isLoadMore) {
-      
       setState(() {
         currentPage = 1;
         latestVenues.clear();
@@ -50,7 +49,7 @@ class _VenueScreenState extends State<VenueScreen> {
     });
 
     try {
-      String url = 'http://192.168.1.22:8000/api/venues?page=$currentPage';
+      String url = 'http://192.168.1.12:8000/api/venues?page=$currentPage';
       if (selectedCategoryId != 0) {
         url += '&category=$selectedCategoryId';
       }
@@ -92,7 +91,8 @@ class _VenueScreenState extends State<VenueScreen> {
   }
 
   Future<void> fetchCategories() async {
-    final response = await http.get(Uri.parse('http://192.168.1.22:8000/api/categories'));
+    final response =
+        await http.get(Uri.parse('http://192.168.1.12:8000/api/categories'));
 
     if (response.statusCode == 200) {
       final List jsonData = jsonDecode(response.body);
@@ -122,7 +122,6 @@ class _VenueScreenState extends State<VenueScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -162,8 +161,6 @@ class _VenueScreenState extends State<VenueScreen> {
                     },
                   ),
                   const SizedBox(width: 8),
-
-                 
                   ...categories.map((category) => Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: FilterChip(
@@ -184,7 +181,6 @@ class _VenueScreenState extends State<VenueScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 16),
             if (isLoading && currentPage == 1 && latestVenues.isEmpty) ...[
               const Text('Venue Terbaru',

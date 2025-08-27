@@ -12,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'components/login_form.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -26,14 +25,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
   bool isLoading = false;
 
-  Future<void> login() async {    
-    setState(() => isLoading = true); 
+  Future<void> login() async {
+    setState(() => isLoading = true);
 
-    LoadingHelper.showLoading(context); 
+    LoadingHelper.showLoading(context);
 
     try {
       final userCredential =
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
@@ -66,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
         SnackBar(content: Text("Login Gagal: $e")),
       );
     } finally {
-      setState(() => isLoading = false); 
+      setState(() => isLoading = false);
     }
   }
 
@@ -134,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print("🔥 Token copied to clipboard.");
       final displayName = user.displayName;
       final response = await http.post(
-        Uri.parse('http://192.168.1.22:8000/api/firebase-login'),
+        Uri.parse('http://192.168.1.12:8000/api/firebase-login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'idToken': idToken,
@@ -145,12 +144,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final prefs = await SharedPreferences.getInstance();
-        
+
         await prefs.setString('laravel_token', data['token']);
         await prefs.setString('name', data['user']['name']);
-        
+
         print('✅ Token Laravel disimpan: ${data['token']}');
-        
+
         return true;
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -211,8 +210,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: size.height > 700
                           ? size.height * 0.1
                           : defaultPadding),
-
-                  
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
@@ -223,7 +220,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? const CircularProgressIndicator()
                         : const Text("Log in"),
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -237,8 +233,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
-
-                  
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
@@ -269,11 +263,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                   ),
-
                   const SizedBox(height: 16),
                   const Divider(),
                   const SizedBox(height: 8),
-
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(

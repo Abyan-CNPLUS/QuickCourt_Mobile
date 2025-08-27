@@ -10,6 +10,7 @@ class Venue {
   final String? thumbnail;
   final String openTime;
   final String closeTime;
+  final String? imageUrlFromServer;
 
   Venue({
     required this.id,
@@ -23,24 +24,37 @@ class Venue {
     this.thumbnail,
     required this.openTime,
     required this.closeTime,
+    this.imageUrlFromServer,
   });
 
   factory Venue.fromJson(Map<String, dynamic> json) {
     return Venue(
-        id: json['id'] ?? 0,
-        name: json['name'] ?? '',
-        address: json['address'] ?? '',
-        capacity: json['capacity'] ?? 0,
-        price: json['price']?.toString() ?? '0',
-        thumbnail: json['thumbnail'] ?? '',
-        status: json['status'] ?? '',
-        category: json['category']?['name'] ?? '',
-        city: json['city']?['name'] ?? '',
-        openTime: json['open_time'] ?? '',
-        closeTime: json['close_time'] ?? '',
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      address: json['address'] ?? '',
+      capacity: json['capacity'] ?? 0,
+      price: json['price']?.toString() ?? '0',
+      thumbnail: json['thumbnail'] ?? '',
+      status: json['status'] ?? '',
+      category: json['category']?['name'] ?? '',
+      city: json['city']?['name'] ?? '',
+      openTime: json['open_time'] ?? '',
+      closeTime: json['close_time'] ?? '',
+      imageUrlFromServer: json['image_url'] ?? '',
     );
   }
 
-  
-  String get imageUrl => thumbnail ?? '';
+  // String get imageUrl => thumbnail ?? '';
+  String get imageUrl {
+    final img = (thumbnail != null && thumbnail!.isNotEmpty)
+        ? thumbnail
+        : imageUrlFromServer;
+    if (img == null || img.isEmpty) {
+      return "https://via.placeholder.com/150";
+    }
+    if (img.startsWith("http")) {
+      return img;
+    }
+    return "http://192.168.1.12:8000/storage/$img";
+  }
 }

@@ -25,11 +25,13 @@ class _FnbLocationScreenState extends State<FnbLocationScreen> {
   }
 
   Future<void> fetchCities() async {
-    final response = await http.get(Uri.parse('http://192.168.1.22:8000/api/fnb/cities'));
+    final response =
+        await http.get(Uri.parse('http://192.168.1.12:8000/api/fnb/cities'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      final loadedCities = List<City>.from(data.map((city) => City.fromJson(city)));
+      final loadedCities =
+          List<City>.from(data.map((city) => City.fromJson(city)));
 
       if (!mounted) return;
       setState(() {
@@ -47,10 +49,11 @@ class _FnbLocationScreenState extends State<FnbLocationScreen> {
   Future<void> fetchVenues() async {
     if (selectedCity == null) return;
 
-    print("Fetching venues for city: ${selectedCity!.name} (ID: ${selectedCity!.id})");
+    print(
+        "Fetching venues for city: ${selectedCity!.name} (ID: ${selectedCity!.id})");
 
     final response = await http.get(
-      Uri.parse('http://192.168.1.22:8000/api/fnb/venues/${selectedCity!.id}'),
+      Uri.parse('http://192.168.1.12:8000/api/fnb/venues/${selectedCity!.id}'),
     );
 
     print("Response status: ${response.statusCode}");
@@ -100,34 +103,35 @@ class _FnbLocationScreenState extends State<FnbLocationScreen> {
       appBar: AppBar(
         title: const Text('Temukan FNB Venue'),
         automaticallyImplyLeading: false,
-        ),
+      ),
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             const SliverToBoxAdapter(child: FnbOfferCarousel()),
-
             SliverToBoxAdapter(
               child: Container(
                 color: Colors.blue[700],
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Row(
                   children: [
                     const Icon(Icons.location_on, color: Colors.white),
                     const SizedBox(width: 8),
                     Text(
                       selectedCity?.name ?? 'Pilih Kota',
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     const Spacer(),
                     TextButton(
                       onPressed: showCitySelector,
-                      child: const Text("Change", style: TextStyle(color: Colors.white)),
+                      child: const Text("Change",
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
               ),
             ),
-
             if (venues.isEmpty)
               const SliverToBoxAdapter(
                 child: Center(
@@ -149,7 +153,7 @@ class _FnbLocationScreenState extends State<FnbLocationScreen> {
                             venue.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            ),
+                          ),
                           subtitle: Text(venue.address),
                           leading: Icon(
                             getCategoryIcon(venue.category),
@@ -161,21 +165,21 @@ class _FnbLocationScreenState extends State<FnbLocationScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => FnbMenuScreen(
-                                venueId: venue.id,
-                                venueName: venue.name,
-                              ),
+                                  venueId: venue.id,
+                                  venueName: venue.name,
+                                ),
                               ),
                             );
                           },
                         ),
-                        
-                        if (index != venues.length - 1) const Divider(
-                          height: 1,
-                              color: Colors.grey,
-                              thickness: 1,
-                              indent: 16,
-                              endIndent: 16,
-                        ),
+                        if (index != venues.length - 1)
+                          const Divider(
+                            height: 1,
+                            color: Colors.grey,
+                            thickness: 1,
+                            indent: 16,
+                            endIndent: 16,
+                          ),
                       ],
                     );
                   },

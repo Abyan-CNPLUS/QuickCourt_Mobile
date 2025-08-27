@@ -8,7 +8,7 @@ import 'package:quick_court_booking/state/menu_state.dart';
 
 final ValueNotifier<List<CartItem>> cart = ValueNotifier<List<CartItem>>([]);
 
-const String baseUrl = 'http://192.168.1.22:8000/api';
+const String baseUrl = 'http://192.168.1.12:8000/api';
 
 Future<String> getToken() async {
   final prefs = await SharedPreferences.getInstance();
@@ -39,18 +39,20 @@ Future<void> loadCartFromBackend() async {
       final body = json.decode(response.body);
 
       debugPrint('🟢 Response JSON root keys: ${body.keys.toList()}');
-      
+
       final List<dynamic> items = body['items'] ?? [];
       debugPrint('🟢 Items count: ${items.length}');
 
       final fetchedCart = items.map((e) {
         final item = CartItem.fromJson(e);
-        debugPrint('🟢 Parsed item: ${item.name}, qty: ${item.qty}, price: ${item.price}');
+        debugPrint(
+            '🟢 Parsed item: ${item.name}, qty: ${item.qty}, price: ${item.price}');
         return item;
       }).toList();
 
       cart.value = fetchedCart;
-      debugPrint('🟢 Cart updated, total items in cart.value: ${cart.value.length}');
+      debugPrint(
+          '🟢 Cart updated, total items in cart.value: ${cart.value.length}');
     } else {
       throw Exception('Failed to fetch cart: ${response.statusCode}');
     }
@@ -59,15 +61,14 @@ Future<void> loadCartFromBackend() async {
   }
 }
 
-
 Future<void> addToCartBackend(int menuId, int qty) async {
   final token = await getToken();
   final url = Uri.parse('$baseUrl/add-cart');
-  
-  
+
   debugPrint('🟢 Attempting to call: $url');
   debugPrint('🟢 Token: ${token.isNotEmpty ? "exists" : "missing"}');
-  debugPrint('🟢 Payload: ${jsonEncode({"fnb_menu_id": menuId, "quantity": qty})}');
+  debugPrint(
+      '🟢 Payload: ${jsonEncode({"fnb_menu_id": menuId, "quantity": qty})}');
 
   try {
     final response = await http.post(
@@ -83,7 +84,6 @@ Future<void> addToCartBackend(int menuId, int qty) async {
       }),
     );
 
-    
     debugPrint('🟢 Response status: ${response.statusCode}');
     debugPrint('🟢 Response body: ${response.body}');
 
@@ -114,9 +114,7 @@ Future<void> removeFromCartBackend(int cartItemId) async {
 
 Future<void> addToCartLocalAndServer(CartItem item) async {
   try {
-    
     if (item.imageUrl == null) {
-
       final menuItem = fnbMenuList.value.firstWhere(
         (menu) => menu.id == item.menuId,
         orElse: () => FnbMenu(
@@ -155,7 +153,6 @@ Future<void> addToCartLocalAndServer(CartItem item) async {
     rethrow;
   }
 }
-
 
 Future<void> removeFromCartLocalAndServer(int menuId, int cartItemId) async {
   try {
